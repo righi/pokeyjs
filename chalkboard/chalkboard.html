@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Chalkboard</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+        	#paper {
+        		background-color: #ccc;
+        		height: 600px;
+        		width: 1000px;
+        	}
+        </style>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script type="text/javascript" src="raphael/raphael-min.js"></script>
+		<script type="text/javascript" src="../pokeyjs/Pokey.js"></script>
+		<script type="text/javascript" src="../pokeyjs/Point.js"></script>
+		<script type="text/javascript" src="../pokeyjs/LineSegment.js"></script>
+		<script type="text/javascript">
+			var paper;
+			
+			var GRID_SIZE = 20;
+			var ORIGIN = Point.create(400,300);
+		
+			function paintPoint(point, size, color) {
+			    paper.circle(point.x + ORIGIN.x, ORIGIN.y - point.y, size).attr("fill",color); 
+			}
+			
+			function paintCircle(center, radius) {
+				paper.circle(center.x + ORIGIN.x, ORIGIN.y - center.y, radius).attr("stroke-width",3);
+			}
+
+			function paintLine(line, thickness, color) {
+				thickness = thickness || 3;
+				color = color || "black";
+				
+				var pointA = Point.create(line.pointA.x + ORIGIN.x, ORIGIN.y - line.pointA.y);
+				var pointB = Point.create(line.pointB.x + ORIGIN.x, ORIGIN.y - line.pointB.y);
+				
+			    paper.path("M" + pointA.toString() + " L" + pointB.toString(), thickness).attr("stroke",color);
+			}		
+						
+			function adjustPoint(point) {
+				return Point.create(point.x + ORIGIN.x, ORIGIN.y - point.y);
+			}
+			
+			function drawGrid() {
+				for (var x = 1; x <= paper.width; x+= GRID_SIZE) {
+					var p1 = Point.create(x, 0);
+					var p2 = Point.create(x, paper.height);
+					paper.path("M" + p1.toString() + " L" + p2.toString(), 1).attr("stroke","gray");
+				}				
+
+				for (var y = 1; y <= paper.height; y+= GRID_SIZE) {
+					var p1 = Point.create(0, y);
+					var p2 = Point.create(paper.width, y);
+					paper.path("M" + p1.toString() + " L" + p2.toString(), 1).attr("stroke","gray");
+				}	
+				
+				var xAxis = LineSegment.create(Point.create(0,ORIGIN.y), Point.create(paper.width, ORIGIN.y));
+				paper.path("M" + xAxis.pointA.toString() + " L" + xAxis.pointB.toString(), 3).attr("stroke","black");
+
+				var yAxis = LineSegment.create(Point.create(ORIGIN.x,0), Point.create(ORIGIN.x,paper.height));
+				paper.path("M" + yAxis.pointA.toString() + " L" + yAxis.pointB.toString(), 3).attr("stroke","black");
+			}
+			
+			function repaint() {
+				paper.clear();
+				drawGrid();
+
+				paintLine(line, 3, "black");
+				paintPoint(line.pointA, 5, "green");
+				paintPoint(line.pointB, 5, "red");
+				
+				paintLine(line.perp(), 3, "purple");
+			}
+			
+			
+			$(function() {
+				
+				paper = new Raphael("paper", 1000, 600);
+				magnitude = 1;
+				line = null;
+				
+				$("#form").submit(function() {
+					
+					var args = {};
+					if ($("#p1").val().length > 0) {
+						args.pointA = Point.create($("#p1").val());
+					}
+
+					if ($("#p2").val().length > 0) {
+						args.pointB = Point.create($("#p2").val());
+					}
+					
+					if ($("#length").val().length > 0) {
+						args.length = new Number($("#length").val());
+					}
+					
+					if ($("#slope").val().length > 0) {
+						args.slope = new Number($("#slope").val());
+					}
+
+					if ($("#yIntercept").val().length > 0) {
+						args.yIntercept = new Number($("#yIntercept").val());
+					}
+					
+					if ($("#dVector").val().length > 0) {
+						args.directionVector = Point.create($("#dVector").val());
+					}
+					
+					line = LineSegment.create(args);
+					
+					$("#p1").val("").val(line.pointA);
+					$("#p2").val("").val(line.pointB);
+					$("#slope").val("").val(line.slope());
+					$("#length").val("").val(line.length());
+					$("#yIntercept").val("").val(line.yIntercept());
+					$("#dVector").val("").val(line.directionVector());
+					
+					repaint();					
+					
+					return false;
+				});
+				
+				drawGrid();
+				
+			});
+		</script>
+	</head>
+	<body>
+		<div id="paper"></div>
+		<form id="form" action="#">
+			<span style="color:green">Point 1:</span> <input type="text" id="p1" value="0,0"/><br />
+			<span style="color:red">Point 2:</span> <input type="text" id="p2" value="100,100"/><br />
+			Length: <input type="text" id="length" /><br />
+			Slope: <input type="text" id="slope" /><br />
+			Y Intercept: <input type="text" id="yIntercept" /><br />
+			Direction Vector: <input type="text" id="dVector" /><br />
+			
+			<input type="submit" id="calculate" value="Calculate" />
+			<input type="reset" id="reset" value="Reset" />
+		</form>
+		
+	</body>
+</html>
