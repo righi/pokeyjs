@@ -188,12 +188,14 @@
 			module("rectangle");
 
 			test("Tests rectangles.", function () {
-				var pointA = Point.create(10,10);
-				var pointC = Point.create(30,0);
-				var rect = Rectangle.create(pointA, pointC);
+				var p1 = Point.create(10,10);
+				var p2 = Point.create(30,0);
+				var rect = Rectangle.create(p1, p2);
 				
+				equal(rect.pointA.toString(), Point.create(10,10).toString());
 				equal(rect.pointB.toString(), Point.create(30,10).toString());
-				equal(rect.pointD.toString(), Point.create(10,0).toString());
+				equal(rect.pointC.toString(), Point.create(30, 0).toString());
+				equal(rect.pointD.toString(), Point.create(10, 0).toString());
 				equal(rect.width(), 20, "rectangle width");
 				equal(rect.height(), 10, "rectangle height");
 				equal(rect.area(), 200, "rectangle area");
@@ -201,6 +203,8 @@
 				equal(rect.surrounds(Point.create(15,5)), true, "Point inside the rectangle");
 				equal(rect.surrounds(Point.create(10,10)), false, "Point on the perimeter");
 				equal(rect.surrounds(Point.create(150,15)), false, "Point outside the rectangle");
+				equal(rect.surrounds(Rectangle.create(Point.create(12,8), Point.create(17,5))), true, "Rectangle inside rectangle")
+				equal(rect.surrounds(Rectangle.create(Point.create(0,0), Point.create(200,200))), false, "Rectangle outside rectangle")
 				
 				equal(rect.isSquare(), false, "Rectangle is not a square");
 
@@ -221,7 +225,7 @@
 				
 				equal(rect.surrounds(Point.create(15,15)), true, "Point inside the rectangle");
 				equal(rect.surrounds(Point.create(20,20)), false, "Point on the perimeter");
-				equal(rect.surrounds(Point.create(150,15)), false, "Point outside the rectangle");
+				equal(rect.surrounds(Point.create(150,15)), false, "Point outside the rectangle");				
 				
 				equal(rect.isSquare(), true, "Rectangle is a square");
 

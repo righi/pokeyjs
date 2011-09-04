@@ -65,13 +65,31 @@ Polygon.create = function(pts) {
 
 function Rectangle() {}
 Rectangle.prototype = {
+	className : "Rectangle",
 	polygon : function() {
 		return Polygon.create(this.points());
 	},
 	points : function() {
 		return [this.pointA, this.pointB, this.pointC, this.pointD];
 	},
-	surrounds : function(point) {
+	surrounds : function(arg) {
+		var points = [];
+		if (arg.className && arg.className === "Rectangle") {
+			points = arg.points(); 
+		} else  {
+			points.push(arg);
+		}
+		return this.surroundsPoints(points);
+	},
+	surroundsPoints : function(pts) {
+		for (var a = 0; a < pts.length; a++) {
+			if (!this.surroundsPoint(pts[a])) {
+				return false;
+			}
+		}
+		return true;
+	},
+	surroundsPoint : function(point) {
 		return (point.x > this.pointA.x && point.x < this.pointB.x) && (point.y < this.pointA.y && point.y > this.pointC.y);
 	},
 	area : function() {
