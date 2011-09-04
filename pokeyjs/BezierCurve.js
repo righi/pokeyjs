@@ -41,14 +41,14 @@ BezierCurve.prototype = {
 			return line.slope();			
 		},
 		extremePoints : function() {
-			var ax = 3 * (anchor2.x - 3 * control2.x + 3 * control1.x - anchor1.x);
-			var bx = 2 * (3 * control2.x - 6 * control1.x + 3 * anchor1.x); 
-			var cx = 3 * control1.x - 3 * anchor1.x;
+			var ax = 3 * (this.anchor2.x - 3 * this.control2.x + 3 * this.control1.x - this.anchor1.x);
+			var bx = 2 * (3 * this.control2.x - 6 * this.control1.x + 3 * this.anchor1.x); 
+			var cx = 3 * this.control1.x - 3 * this.anchor1.x;
 
-			var ay = 3 * (anchor2.y - 3 * control2.y + 3 * control1.y - anchor1.y);
-			var by = 2 * (3 * control2.y - 6 * control1.y + 3 * anchor1.y); 
-			var cy = 3 * control1.y - 3 * anchor1.y;
-
+			var ay = 3 * (this.anchor2.y - 3 * this.control2.y + 3 * this.control1.y - this.anchor1.y);
+			var by = 2 * (3 * this.control2.y - 6 * this.control1.y + 3 * this.anchor1.y); 
+			var cy = 3 * this.control1.y - 3 * this.anchor1.y;
+			
 			var derivs = [(-bx + Math.sqrt((bx*bx) - (4 * ax * cx))) / (2 * ax),
 			              (-bx - Math.sqrt((bx*bx) - (4 * ax * cx))) / (2 * ax),
 			              (-by + Math.sqrt((by*by) - (4 * ay * cy))) / (2 * ay),
@@ -80,12 +80,7 @@ BezierCurve.prototype = {
 				maxY = Math.max(maxY, pt.y)
 			}
 			
-			var bb = Polygon.create();
-			bb.addPoint(Point.create(minX, minY));
-			bb.addPoint(Point.create(maxX, minY));
-			bb.addPoint(Point.create(maxX, maxY));
-			bb.addPoint(Point.create(minX, maxY));
-			return bb;
+			return Rectangle.create(Point.create(minX, minY), Point.create(maxX, maxY));
 		}
 };
 
