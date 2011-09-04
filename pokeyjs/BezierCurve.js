@@ -1,5 +1,5 @@
 /* 
-* pokeyjs version 0.1 beta
+* pokeyjs version 0.1.1 beta
 * https://github.com/righi/pokeyjs
 */
 
@@ -39,6 +39,53 @@ BezierCurve.prototype = {
 			var p2 = this.point(1 - this.increment);
 			var line = LineSegment.create(p1, p2);
 			return line.slope();			
+		},
+		extremePoints : function() {
+			var ax = 3 * (anchor2.x - 3 * control2.x + 3 * control1.x - anchor1.x);
+			var bx = 2 * (3 * control2.x - 6 * control1.x + 3 * anchor1.x); 
+			var cx = 3 * control1.x - 3 * anchor1.x;
+
+			var ay = 3 * (anchor2.y - 3 * control2.y + 3 * control1.y - anchor1.y);
+			var by = 2 * (3 * control2.y - 6 * control1.y + 3 * anchor1.y); 
+			var cy = 3 * control1.y - 3 * anchor1.y;
+
+			var derivs = [(-bx + Math.sqrt((bx*bx) - (4 * ax * cx))) / (2 * ax),
+			              (-bx - Math.sqrt((bx*bx) - (4 * ax * cx))) / (2 * ax),
+			              (-by + Math.sqrt((by*by) - (4 * ay * cy))) / (2 * ay),
+			              (-by - Math.sqrt((by*by) - (4 * ay * cy))) / (2 * ay)];
+
+			var extremes = [];
+			for (var a = 0; a < derivs.length; a++) {
+				var deriv = derivs[a];
+				if (deriv >= 0 && deriv <= 1) {
+					extremes.push(this.point(deriv));
+				}
+			}
+			
+			return extremes;
+		},
+		boundingBox : function() {
+			var points = this.extremePoints();
+			points.push(this.anchor1);
+			points.push(this.anchor2);
+			
+			var minX = minY = Number.MAX_VALUE;
+			var maxX = maxY = Number.MIN_VALUE;
+			for (var a = 0; a < points.length; a++) {
+				var pt = points[a];
+				minX = Math.min(minX, pt.x);
+				minY = Math.min(minY, pt.y);
+				
+				maxX = Math.max(maxX, pt.x);
+				maxY = Math.max(maxY, pt.y)
+			}
+			
+			var bb = Polygon.create();
+			bb.addPoint(Point.create(minX, minY));
+			bb.addPoint(Point.create(maxX, minY));
+			bb.addPoint(Point.create(maxX, maxY));
+			bb.addPoint(Point.create(minX, maxY));
+			return bb;
 		}
 };
 
