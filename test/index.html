@@ -175,7 +175,7 @@
 				equal(poly.points[2].toString(), Point.create(20,20).toString());
 				equal(poly.points[3].toString(), Point.create(20,10).toString());
 				
-				equal(poly.surrounds(Point.create(15,15)), true, "Point inside the polygon.");
+				equal(poly.surrounds(Point.create(15,15)), true, "Point inside the polygon");
 				equal(poly.surrounds(Point.create(10,10)), false, "Point on the perimeter");
 				equal(poly.surrounds(Point.create(150,15)), false, "Point outside the polygon");
 				
@@ -183,6 +183,48 @@
 				
 				poly.addPoint(15,5);
 				equal(poly.area(), 125, "Polygon area");
+			});
+			
+			module("rectangle");
+
+			test("Tests rectangles.", function () {
+				var pointA = Point.create(10,10);
+				var pointC = Point.create(30,0);
+				var rect = Rectangle.create(pointA, pointC);
+				
+				equal(rect.pointB.toString(), Point.create(30,10).toString());
+				equal(rect.pointD.toString(), Point.create(10,0).toString());
+				equal(rect.width(), 20, "rectangle width");
+				equal(rect.height(), 10, "rectangle height");
+				equal(rect.area(), 200, "rectangle area");
+				
+				equal(rect.surrounds(Point.create(15,5)), true, "Point inside the rectangle");
+				equal(rect.surrounds(Point.create(10,10)), false, "Point on the perimeter");
+				equal(rect.surrounds(Point.create(150,15)), false, "Point outside the rectangle");
+				
+				equal(rect.isSquare(), false, "Rectangle is not a square");
+
+			});
+			
+			test("Tests square rectangles.", function () {
+				var p1 = Point.create(10,10);
+				var p2 = Point.create(20,20);
+				var rect = Rectangle.create(p1, p2);
+				
+				equal(rect.pointA.toString(), Point.create(10,20).toString(), "Point A");
+				equal(rect.pointB.toString(), Point.create(20,20).toString(), "Point B");
+				equal(rect.pointC.toString(), Point.create(20,10).toString(), "Point C");
+				equal(rect.pointD.toString(), Point.create(10,10).toString(), "Point D");
+				equal(rect.width(), 10, "square width");
+				equal(rect.height(), 10, "square height");
+				equal(rect.area(), 100, "square area");
+				
+				equal(rect.surrounds(Point.create(15,15)), true, "Point inside the rectangle");
+				equal(rect.surrounds(Point.create(20,20)), false, "Point on the perimeter");
+				equal(rect.surrounds(Point.create(150,15)), false, "Point outside the rectangle");
+				
+				equal(rect.isSquare(), true, "Rectangle is a square");
+
 			});
 	
 		});
