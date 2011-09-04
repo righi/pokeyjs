@@ -159,7 +159,52 @@
 				equal(line.pointB.toString({numDecimals: 4}), Point.create(-7,9).toString({numDecimals: 4}), "line rotated around 0.25 pt");
 				
 			});
+			
+			module("x and y functions");
+			
+			test("Tests the x() and y() functions on a line with a normal slope.", function () {
+				p1 = Point.create(0,0);
+				p2 = Point.create(10,10);
+				var line = LineSegment.create(p1, p2);
+				equal(line.y(0),		0,		"0,0");
+				equal(line.y(4),		4,		"4,4");
+				equal(line.y(7.8),		7.8,	"7.8,7.8");
+				equal(line.y(10),		10,		"10,10");
+				equal(line.y(15),		15,		"15,15");
+				
+				equal(line.x(0),		0,		"0,0");
+				equal(line.x(4),		4,		"4,4");
+				equal(line.x(7.8),		7.8,	"7.8,7.8");
+				equal(line.x(10),		10,		"10,10");
+				equal(line.x(15),		15,		"15,15");
+			});
+			
+			test("Tests the x() and y() functions on a vertical line.", function () {
+				p1 = Point.create(10,0);
+				p2 = Point.create(10,10);
+				var line = LineSegment.create(p1, p2);
+				
+				equal(line.x(0),		10,		"x(0) should be 10");
+				equal(line.x(4),		10,		"x(4) should be 10");
+				equal(line.x(10),		10,		"x(10) should be 10");
 
+				equal(line.y(10) + "",	"NaN",	"y(10) should be NaN");
+				equal(line.y(5),		null,	"y(5) should be null");
+			});
+
+			test("Tests the x() and y() functions on a horizontal line.", function () {
+				p1 = Point.create(0,10);
+				p2 = Point.create(10,10);
+				var line = LineSegment.create(p1, p2);
+				
+				equal(line.x(10) + "",	"NaN",	"x(10) should be NaN");
+				equal(line.x(5),		null,	"x(5) should be null");
+
+				equal(line.y(0),		10,		"0,10");
+				equal(line.y(5),		10,		"5,10");
+				equal(line.y(10),		10,		"10,10");
+				equal(line.y(15),		10,		"15,10");
+			});
 			
 			module("polygon");
 

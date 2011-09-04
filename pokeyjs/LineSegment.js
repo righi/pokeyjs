@@ -1,5 +1,5 @@
 /* 
-* pokeyjs version 0.1 beta
+* pokeyjs version 0.1.1 beta
 * https://github.com/righi/pokeyjs
 */
 
@@ -11,6 +11,32 @@ LineSegment.prototype = {
 				return Math.abs(this.yIntercept - tempLine.yIntercept);
 			} else {
 				return point.x - this.pointA.x;
+			}
+		},
+		x : function(y) {
+			var slope = this.slope();
+			if (slope === 0) {
+				if (y == this.pointA.y) {
+					return Number.NaN;
+				} else {
+					return null;
+				}
+			} else if (isFinite(slope)) {
+				return (y - this.yIntercept()) / slope;
+			} else {
+				return this.pointA.x;
+			}
+		},
+		y : function(x) {
+			var slope = this.slope();
+			if (isFinite(slope)) {
+				return (slope * x) + this.yIntercept();
+			} else {
+				if (x === this.pointA.x) {
+					return Number.NaN;
+				} else  {
+					return null;
+				}
 			}
 		},
 		point : function(t) {
