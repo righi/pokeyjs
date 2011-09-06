@@ -103,6 +103,18 @@ Rectangle.prototype = {
 	},
 	isSquare : function() {
 		return (this.width() === this.height());
+	},
+	bottomY : function() {
+		return this.pointC.y;
+	},
+	topY : function() {
+		return this.pointA.y;
+	},
+	leftX : function() {
+		return this.pointA.x;
+	},
+	rightX : function() {
+		return this.pointC.x;
 	}
 };
 Rectangle.create = function(p1, p2) {
