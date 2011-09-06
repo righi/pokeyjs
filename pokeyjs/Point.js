@@ -1,10 +1,11 @@
 /* 
-* pokeyjs version 0.1 beta
+* pokeyjs version 0.1.1 beta
 * https://github.com/righi/pokeyjs
 */
 
 function Point() {}
 Point.prototype = {
+		className: 'Point',
 		distance: function(point) {
 			var xDiff = (this.x - point.x);
 			var yDiff = (this.y - point.y);
