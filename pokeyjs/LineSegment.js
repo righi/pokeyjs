@@ -73,8 +73,16 @@ LineSegment.prototype = {
 		slope: function() {
 			return LineSegment.calculateSlope(this.pointA, this.pointB);
 		},
-		length: function() {
-			return this.pointA.distance(this.pointB);
+		length: function(newLength, newMidPoint) {
+			var currentLength = this.pointA.distance(this.pointB);
+			if (newLength != null) {
+				this.grow(newLength - currentLength);				
+				if (newMidPoint) {
+					this.midpoint(newMidPoint);
+				}
+				currentLength = this.pointA.distance(this.pointB);
+			}
+			return currentLength;
 		},
 		yIntercept: function() {
 			var slope = this.slope();
@@ -84,8 +92,20 @@ LineSegment.prototype = {
 				return this.pointA.y - (slope * this.pointA.x);
 			}
 		},
-		midpoint: function() {
-			return this.pointA.midpoint(this.pointB);
+		midpoint: function(newMidPoint) {
+			var midpoint = this.pointA.midpoint(this.pointB);
+			if (newMidPoint) {
+				var dv1 = LineSegment.calculateDirectionVector(midpoint, this.pointA);
+				var dv2 = LineSegment.calculateDirectionVector(midpoint, this.pointB);
+				var halfLength = this.length() / 2;
+				
+				this.pointA.x = newMidPoint.x + (dv1.x * halfLength);
+				this.pointA.y = newMidPoint.y + (dv1.y * halfLength);
+				this.pointB.x = newMidPoint.x + (dv2.x * halfLength);
+				this.pointB.y = newMidPoint.y + (dv2.y * halfLength);
+				midpoint = newMidPoint;
+			}
+			return midpoint;
 		},
 		clone: function() {
 			return LineSegment.create(this.pointA.clone(), this.pointB.clone());
@@ -129,10 +149,9 @@ LineSegment.prototype = {
 			
 			var addition = newLength - this.length(); 
 			
-			var midP1Line = LineSegment.create(this.midpoint(), this.pointA);
-			var midP2Line = LineSegment.create(this.midpoint(), this.pointB);
-			var dv1 = midP1Line.directionVector();
-			var dv2 = midP2Line.directionVector();
+			var midpoint = this.midpoint();
+			var dv1 = LineSegment.calculateDirectionVector(midpoint, this.pointA);
+			var dv2 = LineSegment.calculateDirectionVector(midpoint, this.pointB);
 			
 			var pointAFactor = this.pointA.distance(growthPoint) / this.length();
 			var pointBFactor = this.pointB.distance(growthPoint) / this.length();

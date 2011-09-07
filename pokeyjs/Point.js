@@ -30,6 +30,9 @@ Point.prototype = {
 			this.x = x;
 			this.y = y;
 		},
+		add: function(point) {
+			return this.addX(point.x).addY(point.y);
+		},
 		addX: function(amt) {
 			this.x += amt;
 			return this;

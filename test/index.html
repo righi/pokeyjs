@@ -160,6 +160,106 @@
 				
 			});
 			
+			module("midpoint() to relocate a line.");
+			
+			test("Tests midpoint() to relocate a horizontal line segment, along a new line path.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,0);
+				var line = LineSegment.create(pt1, pt2);
+				line.midpoint(Point.create(5,5));
+				equal(line.pointA.toString(), Point.create(0,5).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(10,5).toString(), "pointB");
+			});
+
+			test("Tests midpoint() to relocate a horizontal line segment, along the same line path.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,0);
+				var line = LineSegment.create(pt1, pt2);
+				line.midpoint(Point.create(8,0));
+				equal(line.pointA.toString(), Point.create(3,0).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(13,0).toString(), "pointB");
+			});
+
+			test("Tests midpoint() to relocate a vertical line segment, along a new line path.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(0,10);
+				var line = LineSegment.create(pt1, pt2);
+				line.midpoint(Point.create(5,5));
+				equal(line.pointA.toString(), Point.create(5,0).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(5,10).toString(), "pointB");
+			});
+
+			test("Tests midpoint() to relocate a vertical line segment, along the same line path.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(0,10);
+				var line = LineSegment.create(pt1, pt2);
+				line.midpoint(Point.create(0,10));
+				equal(line.pointA.toString(), Point.create(0,5).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(0,15).toString(), "pointB");
+			});
+
+			test("Tests midpoint() to relocate a diagonal line segment, along a new line path.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,10);
+				var line = LineSegment.create(pt1, pt2);
+				line.midpoint(Point.create(5,7));
+				equal(line.pointA.toString(), Point.create(0,2).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(10,12).toString(), "pointB");
+			});
+
+			test("Tests midpoint() to relocate a diagonal line segment, along the same line path.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,10);
+				var line = LineSegment.create(pt1, pt2);
+				line.midpoint(Point.create(9,9));
+				equal(line.pointA.toString(), Point.create(4,4).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(14,14).toString(), "pointB");
+			});
+
+						
+			module("length() to shrink and grow");
+			
+			test("Tests length() to grow a line segment, with no new midPoint", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,0);
+				var line = LineSegment.create(pt1, pt2);
+				line.length(20);
+				equal(line.length(), 20, "Length");
+				equal(line.pointA.toString(), Point.create(-5,0).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(15,0).toString(), "pointB");
+			});
+			
+			test("Tests length() to grow a line segment, with a new midPoint", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,0);
+				var line = LineSegment.create(pt1, pt2);
+				line.length(20, Point.create(10,0));
+				equal(line.length(), 20, "Length");
+				equal(line.pointA.toString(), Point.create(0,0).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(20,0).toString(), "pointB");
+			});
+			
+			test("Tests length() to shrink a line segment, with no new midPoint", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(20,0);
+				var line = LineSegment.create(pt1, pt2);
+				line.length(10);
+				equal(line.length(), 10, "Length");
+				equal(line.pointA.toString(), Point.create(5,0).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(15,0).toString(), "pointB");
+			});
+			
+			test("Tests length() to shrink a line segment, with a new midPoint", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(20,0);
+				var line = LineSegment.create(pt1, pt2);
+				line.length(10, Point.create(18,0));
+				equal(line.length(), 10, "Length");
+				equal(line.pointA.toString(), Point.create(13,0).toString(), "pointA");
+				equal(line.pointB.toString(), Point.create(23,0).toString(), "pointB");
+			});
+
+			
 			module("grow");
 			
 			test("Tests growing lines without a growthPoint specified and a number provided for the size of growth on a horizontal line.", function () {
