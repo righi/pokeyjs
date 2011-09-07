@@ -160,6 +160,51 @@
 				
 			});
 			
+			module("grow");
+			
+			test("Tests growing lines without a growthPoint specified and a number provided for the size of growth on a horizontal line.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,0);
+				var line = LineSegment.create(pt1, pt2);
+				line.grow(5);
+				equal(line.length(), 15, "Length");
+			});
+
+			test("Tests growing lines without a growthPoint specified and a number provided for the size of growth on a vertical line.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(0,10);
+				var line = LineSegment.create(pt1, pt2);
+				line.grow(5);
+				equal(line.length(), 15, "Length");
+			});
+
+			test("Tests growing lines without a growthPoint specified and a number provided for the size of growth.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,10);
+				var line = LineSegment.create(pt1, pt2);
+				line.grow(5);
+				var originalLength = 14.14213562373095;
+				equal(line.length(), originalLength + 5, "Length");
+			});
+
+			test("Tests growing lines without a growthPoint specified and a string containing a number provided for the size of growth.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,10);
+				var line = LineSegment.create(pt1, pt2);
+				line.grow("5");
+				var originalLength = 14.14213562373095;
+				equal(line.length(), originalLength + 5, "Length");
+			});
+
+			test("Tests growing lines without a growthPoint specified and a string containing a percent provided for the size of growth.", function () {
+				var pt1 = Point.create(0,0);
+				var pt2 = Point.create(10,10);
+				var line = LineSegment.create(pt1, pt2);
+				line.grow("25%");
+				equal(line.length(), 17.677669529663688, "Length");
+			});
+
+			
 			module("x and y functions");
 			
 			test("Tests the x() and y() functions on a line with a normal slope.", function () {

@@ -130,14 +130,17 @@ LineSegment.prototype = {
 			var addition = newLength - this.length(); 
 			
 			var midP1Line = LineSegment.create(this.midpoint(), this.pointA);
-			var midP2Line = LineSegmenet.create(this.midpoint(), this.pointB);
+			var midP2Line = LineSegment.create(this.midpoint(), this.pointB);
+			var dv1 = midP1Line.directionVector();
+			var dv2 = midP2Line.directionVector();
+			
 			var pointAFactor = this.pointA.distance(growthPoint) / this.length();
 			var pointBFactor = this.pointB.distance(growthPoint) / this.length();
 			
-			this.pointA.addX(pointAFactor * addition * midP1Line.directionVector.x);
-			this.pointA.addY(pointAFactor * addition * midP1Line.directionVector.y);
-			this.pointB.addX(pointBFactor * addition * midP2Line.directionVector.x);
-			this.pointB.addY(pointBFactor * addition * midP2Line.directionVector.y);
+			this.pointA.addX(pointAFactor * addition * dv1.x);
+			this.pointA.addY(pointAFactor * addition * dv1.y);
+			this.pointB.addX(pointBFactor * addition * dv2.x);
+			this.pointB.addY(pointBFactor * addition * dv2.y);
 		},
 		shrink: function(args, shrinkPoint) {
 			// TODO This isn't robust.  What if their shrinkPoint is "-5"?
