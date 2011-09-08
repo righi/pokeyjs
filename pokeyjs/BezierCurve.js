@@ -81,6 +81,16 @@ BezierCurve.prototype = {
 			}
 			
 			return Rectangle.create(Point.create(minX, minY), Point.create(maxX, maxY));
+		},
+		split : function(t) {
+			// Merci, Paul de Casteljau!
+			var midPt1 = Point.create(this.anchor1.x + t * (this.control1.x - this.anchor1.x), this.anchor1.y + t * (this.control1.y - this.anchor1.y));
+		    var midPt2 = Point.create(this.control1.x + t * (this.control2.x - this.control1.x), this.control1.y + t * (this.control2.y - this.control1.y));
+			var midPt3 = Point.create(this.control2.x + t * (this.anchor2.x - this.control2.x), this.control2.y + t * (this.anchor2.y - this.control2.y));
+			var midPt4 = Point.create(midPt1.x + t * (midPt2.x - midPt1.x), midPt1.y + t * (midPt2.y - midPt1.y));
+			var midPt5 = Point.create(midPt2.x + t * (midPt3.x - midPt2.x), midPt2.y + t * (midPt3.y - midPt2.y));
+			var sharedAnchor = Point.create(midPt4.x + t * (midPt5.x - midPt4.x), midPt4.y + t * (midPt5.y - midPt4.y));
+			return [BezierCurve.create(this.anchor1.clone(), midPt1, midPt4, sharedAnchor), BezierCurve.create(sharedAnchor.clone(), midPt5, midPt3, this.anchor2.clone())];
 		}
 };
 
