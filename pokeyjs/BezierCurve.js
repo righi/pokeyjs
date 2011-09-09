@@ -119,3 +119,23 @@ BezierCurve.create = function() {
 	bc.increment = increment;	
 	return bc;
 };
+
+// Thank you Vincent: http://polymathprogrammer.com/2007/06/27/reverse-engineering-bezier-curves/
+BezierCurve.interpolateControls = function(anchor1, anchor2, p1, p2, u, v) {
+		var a = 3*(1-u)*(1-u)*u; 
+		var b = 3*(1-u)*u*u;
+		var c = 3*(1-v)*(1-v)*v; 
+		var d = 3*(1-v)*v*v;
+		var det = a*d - b*c;
+
+		var q1x = p1.x - ( (1-u)*(1-u)*(1-u)*anchor1.x + u*u*u*anchor2.x );
+		var q1y = p1.y - ( (1-u)*(1-u)*(1-u)*anchor1.y + u*u*u*anchor2.y );
+
+		var q2x = p2.x - ( (1-v)*(1-v)*(1-v)*anchor1.x + v*v*v*anchor2.x );
+		var q2y = p2.y - ( (1-v)*(1-v)*(1-v)*anchor1.y + v*v*v*anchor2.y );
+
+		var control1 = Point.create((d*q1x - b*q2x) / det, (d*q1y - b*q2y) / det);
+		var control2 = Point.create(((-c)*q1x + a*q2x) / det, ((-c)*q1y + a*q2y) / det);
+		
+		return [control1, control2];
+};
