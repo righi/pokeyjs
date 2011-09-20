@@ -3,7 +3,6 @@
 * https://github.com/righi/pokeyjs
 */
 
-// TODO Right now this only supports cubic Bezier curves.  Add support for quadratic and others.
 function BezierCurve() {}
 BezierCurve.prototype = {
 		point: function(t) {
@@ -16,10 +15,20 @@ BezierCurve.prototype = {
 			max = max || 1;
 			increment = increment || this.increment;
 			var pts = [];
-			for (var t = min; t <= max; t+= increment) {
+			for (var t = min; t <= max; t += increment) {
 				pts.push(this.point(t));
 			}
 			return pts;
+		},
+		locationsOnPath : function(point, tolerance, increment) {
+			var result = [];
+			var increment = increment || this.increment;
+			for (t = 0; t <= 1; t += increment) {
+				if (this.point(t).distance(point) <= tolerance) {
+					result.push(t);
+				}
+			}
+			return result;
 		},
 		svg: function() {
 			var svg = "M " + this.anchor1 + " ";

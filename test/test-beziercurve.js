@@ -51,6 +51,31 @@ $(document).ready(function() {
 		equal(curves[1].anchor2.toString(), Point.create(300, 140).toString(), "Second Half Curve, Anchor Point 2")		
 		
 	});
+	
+	
+	test("Finding a point on a Bezier Curve", function() {
+	
+		var anchor1 = Point.create(50, 50);
+		var control1 = Point.create(120, 170);
+		var control2 = Point.create(100, 30);
+		var anchor2 = Point.create(300, 140);
+		var curve = BezierCurve.create(anchor1, control1, control2, anchor2);
+
+		var tolerance = 0.1;
+		var ts = curve.locationsOnPath(Point.create(50,50), tolerance);
+		equal(ts.length, 1, "One result found");
+		equal(ts[0], 0, "Anchor1 found on curve");
+		
+		var midPoint = curve.point(0.5);
+		var ts = curve.locationsOnPath(midPoint, tolerance);
+		equal(ts.length, 1, "One result found");
+
+		var delta = 0.001;
+		QUnit.close(ts[0], 0.5, delta, "Midpoint on a curve");
+		
+		// TODO Add tests for overlapping curves
+		
+	});
 
 	
 });
