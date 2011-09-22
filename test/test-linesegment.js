@@ -78,6 +78,7 @@ $(document).ready(function() {
 		equal(LineSegment.create({pointA: Point.create(0,0), pointB: Point.create(100,0)}).angle(), 	0, 		"0 Degrees" );
 		equal(LineSegment.create({pointA: Point.create(0,0), pointB: Point.create(100,100)}).angle(), 	45,		"45 Degrees" );
 		equal(LineSegment.create({pointA: Point.create(0,0), pointB: Point.create(0,100)}).angle(), 	90,		"90 Degrees" );
+		equal(LineSegment.create({pointA: Point.create(0,0), pointB: Point.create(0,-100)}).angle(), 	270,	"270 Degrees" );
 		equal(LineSegment.create({pointA: Point.create(0,0), pointB: Point.create(-100,100)}).angle(), 	135,	"135 Degrees" );
 		equal(LineSegment.create({pointA: Point.create(0,0), pointB: Point.create(-100,0)}).angle(), 	180,	"180 Degrees" );
 		equal(LineSegment.create({pointA: Point.create(0,0), pointB: Point.create(-100,-100)}).angle(), 225,	"225 Degrees" );
