@@ -8,7 +8,7 @@ LineSegment.prototype = {
 		distance: function(point) {
 			if (this.yIntercept != null) {
 				var tempLine = LineSegment.create({pointA: point, slope: this.slope});
-				return Math.abs(this.yIntercept - tempLine.yIntercept);
+				return Math.abs(this.yIntercept() - tempLine.yIntercept());
 			} else {
 				return point.x - this.pointA.x;
 			}
@@ -56,6 +56,11 @@ LineSegment.prototype = {
 			var y2 = point.y + (distance * dv.x);
 
 			return [Point.create(x1,y1), Point.create(x2,y2)];
+		},
+		intersection : function(line) {
+			var x = (line.yIntercept() - this.yIntercept()) / (this.slope() / line.slope());
+			var y = line.y(x);
+			return Point.create(x, y);
 		},
 		perp: function(rotatePoint, length) {
 			rotatePoint = rotatePoint || this.midpoint();
