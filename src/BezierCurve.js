@@ -23,7 +23,7 @@ BezierCurve.prototype = {
 		locationsOnPath : function(point, tolerance, increment) {
 			var result = [];
 			var increment = increment || this.increment;
-			for (t = 0; t <= 1; t += increment) {
+			for (var t = 0; t <= 1; t += increment) {
 				if (this.point(t).distance(point) <= tolerance) {
 					result.push(t);
 				}
