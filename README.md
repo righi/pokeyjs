@@ -3,7 +3,7 @@ pokeyjs
 
 A linear algebra/geometry library for JavaScript.
 
-Current Version: 0.1 beta
+Current Version: 0.1.2 beta
 
 
 Usage

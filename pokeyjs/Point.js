@@ -1,5 +1,5 @@
 /* 
-* pokeyjs version 0.1.1 beta
+* pokeyjs version 0.1.2 beta
 * https://github.com/righi/pokeyjs
 */
 
@@ -89,7 +89,7 @@ Point.create = function() {
 	
 	if (args.length == 1) {
 		var point = args[0];
-		if (point.x && point.y) { // It's a point, or point-like object
+		if (point.x != undefined && point.y != undefined) { // It's a point, or point-like object
 			p.x = new Number(point.x) * 1.0;
 			p.y = new Number(point.y) * 1.0;
 		} else if (point.split) { // It's a comma delimited string
